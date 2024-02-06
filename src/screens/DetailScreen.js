@@ -24,6 +24,7 @@ const App = () => {
   );
 };
 
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -54,3 +55,6 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+=======
+export default DetailScreen;
+>>>>>>> 82152c35d03a45497d43a0b0fdf0c4776b9dbeae
