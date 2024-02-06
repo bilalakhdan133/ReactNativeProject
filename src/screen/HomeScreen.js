@@ -14,7 +14,7 @@ const HomeScreen = ({ navigation }) => {
         setTimeout(() => {
           setUserData(data.results);
           setIsLoading(false);
-        }, 3000); // Set loading to false after 5 seconds
+        }, 1000); // Set loading to false after 5 seconds
       })
       .catch((error) => {
         console.error('Error fetching data:', error);

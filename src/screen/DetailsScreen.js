@@ -47,6 +47,7 @@
 // export default DetailScreen;
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import Button from '../components/Button';
 
 const DetailScreen = ({ route }) => {
   const { selectedUser } = route.params;
@@ -67,6 +68,7 @@ const DetailScreen = ({ route }) => {
         <Text>Email: {selectedUser.email}</Text>
         <Text>Phone: {selectedUser.phone}</Text>
         <Text>Gender: {selectedUser.gender}</Text>
+        <Button theme="primary" label="Back To Home"></Button>
       </View>
     </View>
   );
