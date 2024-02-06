@@ -2,7 +2,7 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 
-const DetailScreen = () => {
+const DetailsScreen = () => {
   return (
     <View style={{ flex: 5, justifyContent: "center", alignItems: "center" }}>
       <Text>Welcome to Details👋🏼✨</Text>
