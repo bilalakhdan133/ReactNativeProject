@@ -11,10 +11,10 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
    <NavigationContainer>
-      <Stack.Navgator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailScreen} />
-      </Stack.Navgator>
+      </Stack.Navigator>
    </NavigationContainer>
   );
 }
