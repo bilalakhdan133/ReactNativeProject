@@ -4,10 +4,15 @@ import { View, Text, Button } from "react-native";
 
 const DetailScreen = () => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Details Screen</Text>
+    <View style={{ flex: 5, justifyContent: "center", alignItems: "center" }}>
+      <Text>Welcome to Details👋🏼✨</Text>
     </View>
   );
 };
+    </View>
+
+const Style = StyleSheet.create ({
+    
+})
 
 export default DetailScreen;
