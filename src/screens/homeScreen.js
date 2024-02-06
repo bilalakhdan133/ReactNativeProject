@@ -12,13 +12,13 @@ const HomeScreen = ({ navigation }) => {
       />
 =======
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
 const HomeScreen = ({ navigation }) => {
     const carouselData = [
-        { id: 1, source: require('./src/assets/image1.jpg'), text: 'Lorem ipsum 1' },
-        { id: 2, source: require('./src/assetsimage2.jpg'), text: 'Lorem ipsum 2' },
+        { id: 1, source: require('../assets/image1.jpg'), text: 'Lorem ipsum 1' },
+        { id: 2, source: require('../assets/image2.jpg'), text: 'Lorem ipsum 2' },
       ];
     
       const renderCarouselItem = ({ item }) => (
