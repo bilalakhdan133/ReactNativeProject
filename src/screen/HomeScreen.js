@@ -1,120 +1,99 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, FlatList, Image, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
-import axios from 'axios';
+import { View, Text, Button, ScrollView, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
   const [userData, setUserData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchData();
-  }, [page, searchQuery]);
+    // Fetch data from the API
+    fetch('https://randomuser.me/api/?results=30')
+      .then((response) => response.json())
+      .then((data) => {
+        setTimeout(() => {
+          setUserData(data.results);
+          setIsLoading(false);
+        }, 3000); // Set loading to false after 5 seconds
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setIsLoading(false); // Set loading to false in case of error
+      });
+  }, []); // Empty dependency array to run the effect only once when the component mounts
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`https://randomuser.me/api/?results=10&page=${page}`);
-      const newData = response.data.results.filter((user) =>
-        `${user.name.first} ${user.name.last}`.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setUserData((prevData) => (page === 1 ? newData : [...prevData, ...newData]));
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
+  const navigateToDetails = (selectedUser) => {
+    navigation.navigate('Details', { selectedUser });                                                                            
   };
 
-  const navigateToDetails = (item) => {
-    navigation.navigate('Details', { user: item });
-  };
-
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigateToDetails(item)}>
-      <View style={styles.userContainer}>
-        <Image source={{ uri: item.picture.thumbnail }} style={styles.thumbnail} />
-        <View style={styles.userInfo}>
-          <Text>{`${item.name.first} ${item.name.last}`}</Text>
-          <Text>{item.email}</Text>
-        </View>
+  const renderUserItem = (user) => (
+    <TouchableOpacity key={user.login.uuid} onPress={() => navigateToDetails(user)}>
+      <View style={styles.userItem}>
+        <Image
+          style={styles.avatar}
+          source={{ uri: user.picture.thumbnail }}
+        />
+        <Text>{`${user.name.first} ${user.name.last}\n${user.email}`}</Text>
       </View>
     </TouchableOpacity>
   );
 
-  const renderFooter = () => {
-    if (loading) {
-      return (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#000" />
-        </View>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const handleEndReached = () => {
-    // Fetch more data when the end of the list is reached
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    setPage(1); // Reset page when performing a new search
-  };
+  const filteredUsers = userData.filter(user =>
+    `${user.name.first} ${user.name.last}`.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
-    <View style={{ flex: 1 }}>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search users..."
-        value={searchQuery}
-        onChangeText={handleSearch}
-      />
-      <FlatList
-        data={userData}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItem}
-        onEndReached={handleEndReached}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={renderFooter}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
-      />
-      <Button title="Go to Details" onPress={() => navigation.navigate('Details', { userData })} />
+    <View style={styles.container}>
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <>
+          <TextInput
+            style={styles.input}
+            placeholder="Search..."
+            onChangeText={setSearchText}
+            value={searchText}
+          />
+          <ScrollView style={styles.scrollView}>
+            {filteredUsers.map(renderUserItem)}
+          </ScrollView>
+          {/* <Button
+            title="Go to Details"
+            onPress={() => navigation.navigate('Details', { userData })}
+          /> */}
+        </>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  userContainer: {
+  container: {
+    flex: 1,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    borderColor : 'black'
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  userItem: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
   },
-  thumbnail: {
+  avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
     marginRight: 10,
-  },
-  userInfo: {
-    flex: 1,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    padding: 10,
-  },
-  searchInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    margin: 10,
-    padding: 5,
   },
 });
 
