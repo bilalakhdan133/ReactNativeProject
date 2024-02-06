@@ -10,4 +10,4 @@ const DetailScreen = () => {
   );
 };
 
-export default DetailsScreen;
+export default DetailScreen;
