@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import DetailScreen from './screens/DetailScreen';
-import HomeScreen from './screens/HomeScreen';
+import DetailScreen from './src/screens/DetailScreen';
+import HomeScreen from './src/screens/homeScreen';
 
 const Stack = createStackNavigation();
 
